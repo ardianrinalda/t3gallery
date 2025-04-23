@@ -1,10 +1,13 @@
-// src/db.ts
 import { drizzle } from "drizzle-orm/neon-http";
 import { neon } from "@neondatabase/serverless";
-import { config } from "dotenv";
+import * as schema from "./schema";
 
-import * as schema from "./schema"
-config({ path: ".env" }); // or .env.local
+// ✅ REMOVE dotenv — Vercel injects env vars automatically
 
-const sql = neon(process.env.DATABASE_URL!);
+// ✅ SAFELY CHECK runtime env variable
+if (!process.env.DATABASE_URL) {
+  throw new Error("❌ DATABASE_URL is not defined in the environment.");
+}
+
+const sql = neon(process.env.DATABASE_URL);
 export const db = drizzle(sql, { schema });
