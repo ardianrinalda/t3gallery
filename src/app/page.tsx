@@ -2,6 +2,7 @@ import Link from "next/link";
 import { db } from "../server/db";
 import { index } from "drizzle-orm/gel-core";
 export const dynamic = "force-dynamic";
+export const runtime = 'edge'; // ⬅️ Tell Next.js this page runs in Edge Functions
 
 
 export default async function HomePage() {
