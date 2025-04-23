@@ -24,12 +24,3 @@ export default async function HomePage() {
     </main>
   );
 }
-
-export function Home() {
-  try {
-    return <main>Hello T3Gallery</main>;
-  } catch (err) {
-    console.error("SSR crash:", err);
-    return <main>Something went wrong</main>;
-  }
-}
