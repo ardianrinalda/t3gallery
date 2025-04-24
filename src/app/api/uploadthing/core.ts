@@ -18,7 +18,7 @@ export const ourFileRouter = {
     .middleware(async ({ req }) => {
         // 👈 pass the request to Clerk
         const request = req as unknown as RequestLike;
-        const { userId } = getAuth(request);
+        const { userId } = getAuth(req as any);
       
         if (!userId) throw new UploadThingError("Unauthorized");
       
