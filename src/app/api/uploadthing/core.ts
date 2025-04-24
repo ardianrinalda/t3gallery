@@ -11,14 +11,7 @@ const f = createUploadthing();
 export const ourFileRouter = {
   // Define as many FileRoutes as you like, each with a unique routeSlug
   imageUploader: f({
-    image: {
-      /**
-       * For full list of options and defaults, see the File Route API reference
-       * @see https://docs.uploadthing.com/file-routes#route-config
-       */
-      maxFileSize: "4MB",
-      maxFileCount: 1,
-    },
+    image: {maxFileSize: "4MB", maxFileCount: 25},
   })
     // Set permissions and file types for this FileRoute
     .middleware(async ({ req }) => {
@@ -31,22 +24,15 @@ export const ourFileRouter = {
         return { userId };
       })      
     .onUploadComplete(async ({ metadata, file }) => {
-      console.log("📥 FILE:", {
-        name: file?.name,
-        size: file?.size,
-        ufsUrlLen: file?.ufsUrl?.length,
-      });
-      console.log("👤 METADATA:", metadata);
     
       try {
         const result = await db.insert(images).values({
           name: file.name,
           url: file.ufsUrl,          // make sure url column is long enough
+          userId: metadata.userId,
         });
-        console.log("✅ INSERT OK:", result);
         return { uploadedBy: metadata.userId };
       } catch (err) {
-        console.error("💥 INSERT FAILED:", err);
         throw new UploadThingError(
           "insert failed: " + (err instanceof Error ? err.message : String(err))
         );
