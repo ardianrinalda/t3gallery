@@ -1,4 +1,5 @@
 import { auth, getAuth } from "@clerk/nextjs/server";
+import type { RequestLike } from "node_modules/@clerk/nextjs/dist/types/server/types";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
 import { db } from "~/server/db";
@@ -16,7 +17,8 @@ export const ourFileRouter = {
     // Set permissions and file types for this FileRoute
     .middleware(async ({ req }) => {
         // 👈 pass the request to Clerk
-        const { userId } = getAuth(req);
+        const request = req as unknown as RequestLike;
+        const { userId } = getAuth(request);
       
         if (!userId) throw new UploadThingError("Unauthorized");
       
