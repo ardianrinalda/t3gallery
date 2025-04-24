@@ -3,6 +3,7 @@ import { db } from "../server/db";
 import { index } from "drizzle-orm/gel-core";
 import { SignedOut } from "@clerk/nextjs";
 import { SignedIn } from "@clerk/nextjs";
+import { images } from "~/server/db/schema";
 export const dynamic = "force-dynamic";
 export const runtime = 'edge'; // ⬅️ Tell Next.js this page runs in Edge Functions
 
@@ -12,9 +13,9 @@ async function Images(){
   });
   return (
     <div className="flex flex-wrap gap-4">
-          {[...images, ...images, ...images, ...images].map((image, index) => (
-            <div key={image.id + "-" + index} className="flex w-48 flex-col">
-              <img src={image.url} />
+          {images.map((image) => (
+            <div key={image.id} className="flex w-48 flex-col">
+              <img src={image.url} alt={image.name} className="rounded w-48" />
               <div>{image.name}</div>
             </div>
           ))}
@@ -35,3 +36,4 @@ export default async function HomePage() {
     </main>
   );
 }
+

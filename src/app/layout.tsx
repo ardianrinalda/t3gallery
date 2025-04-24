@@ -1,9 +1,12 @@
 import "~/styles/globals.css";
+import "@uploadthing/react/styles.css";
 
 import { ClerkProvider } from "@clerk/nextjs";
 import { type Metadata } from "next";
 import { Inter } from "next/font/google";
 import { TopNav } from "./_components/topnav";
+
+
 export const runtime = 'edge'; // ⬅️ Tell Next.js this page runs in Edge Functions
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
