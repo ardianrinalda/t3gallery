@@ -29,7 +29,7 @@ export const ourFileRouter = {
         const result = await db.insert(images).values({
           name: file.name,
           url: file.ufsUrl,          // make sure url column is long enough
-          userId: metadata.userId,
+          userId: metadata.userId!,
         });
         return { uploadedBy: metadata.userId };
       } catch (err) {

@@ -1,16 +1,12 @@
-import Link from "next/link";
-import { db } from "../server/db";
-import { index } from "drizzle-orm/gel-core";
 import { SignedOut } from "@clerk/nextjs";
 import { SignedIn } from "@clerk/nextjs";
-import { images } from "~/server/db/schema";
+import { getMyImages } from "~/server/queries";
 export const dynamic = "force-dynamic";
 export const runtime = 'edge'; // ⬅️ Tell Next.js this page runs in Edge Functions
 
 async function Images(){
-  const images = await db.query.images.findMany({
-    orderBy: (model, {desc}) => desc(model.id)
-  });
+  const images = await getMyImages();
+
   return (
     <div className="flex flex-wrap gap-4">
           {images.map((image) => (
