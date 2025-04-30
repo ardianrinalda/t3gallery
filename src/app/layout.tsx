@@ -8,6 +8,7 @@ import { TopNav } from "./_components/topnav";
 import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "./api/uploadthing/core";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
+import { Toaster } from "sonner";
 
 
 export const runtime = 'edge'; // ⬅️ Tell Next.js this page runs in Edge Functions
@@ -39,7 +40,7 @@ export default function RootLayout({
              */
             routerConfig={extractRouterConfig(ourFileRouter)}
         />
-        <body className={`font-sans ${inter.variable} dark`}>
+        <body className={`font-sans ${inter.variable}`}>
           <div className="grid h-screen grid-rows-[auto,1fr]">
             <TopNav />
             <main className="overflow-y-scroll">{children}</main>
@@ -47,6 +48,8 @@ export default function RootLayout({
           
           {modal}
           <div id="modal-root" />
+          <Toaster />
+
         </body>
       </html>
     </ClerkProvider>
