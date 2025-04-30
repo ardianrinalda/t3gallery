@@ -12,7 +12,7 @@ import { Toaster } from "sonner";
 import { PostHogProvider } from "./_analytics/provider";
 
 
-export const runtime = 'edge'; // ⬅️ Tell Next.js this page runs in Edge Functions
+// export const runtime = 'edge'; // ⬅️ Tell Next.js this page runs in Edge Functions
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 

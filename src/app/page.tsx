@@ -4,7 +4,7 @@ import { getMyImages } from "~/server/queries";
 import Image from "next/image";
 import Link from "next/link";
 export const dynamic = "force-dynamic";
-export const runtime = 'edge'; // ⬅️ Tell Next.js this page runs in Edge Functions
+// export const runtime = 'edge'; // ⬅️ Tell Next.js this page runs in Edge Functions
 
 async function Images(){
   const images = await getMyImages();

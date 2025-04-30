@@ -9,3 +9,4 @@ ignoredBuiltDependencies:
 
 onlyBuiltDependencies:
   - core-js
+  - msw
