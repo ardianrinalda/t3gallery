@@ -1,6 +1,8 @@
 ignoredBuiltDependencies:
   - '@clerk/shared'
+  - '@sentry/cli'
   - bufferutil
+  - es5-ext
   - esbuild
   - sharp
   - unrs-resolver
