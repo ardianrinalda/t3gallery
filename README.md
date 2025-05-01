@@ -16,4 +16,11 @@
 - [x] Update upload button
 - [x] Analytics (posthog)
 - [x] Delete button (ww/ Server Action)
-- [ ] Ratelimiting (upstash)
+- [x] Ratelimiting (upstash)
+
+## Extra
+
+- [ ] Fix the current page layout for different resolutions, manage the topnav s.t. it stays regardless the number of pics
+- [ ] add "selecting images" feature
+- [ ] infinite scroll
+- [ ] folders/albums
