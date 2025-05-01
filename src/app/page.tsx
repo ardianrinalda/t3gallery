@@ -1,27 +1,41 @@
 // src/app/page.tsx
-export const dynamic = 'force-dynamic';
+export const dynamic    = 'force-dynamic';
+export const fetchCache = 'force-no-store';
 
 import { SignedOut, SignedIn } from '@clerk/nextjs';
-import { getMyImagesPage }      from '~/server/queries';   // NEW (see below)
-import SelectableGallery        from './_components/select-gallery';
+import { auth }               from '@clerk/nextjs/server';   // ← NEW
+import { getMyImagesPage }    from '~/server/queries';
+import SelectableGallery      from './_components/select-gallery';
 
 export default async function HomePage() {
-  // ------- fetch first “page” -------
-  const { images, nextCursor } = await getMyImagesPage({
-    limit: 20,
-    cursor: null,          // first page ⇒ no cursor yet
-  });
+  /* ---------- auth ---------- */
+  const { userId } = await auth();            // server-side; undefined if signed-out
 
+  /* ---------- first page of images (only if signed-in) ---------- */
+  let images:      Awaited<ReturnType<typeof getMyImagesPage>>['images']      = [];
+  let nextCursor:  Awaited<ReturnType<typeof getMyImagesPage>>['nextCursor']  = null;
+
+  if (userId) {
+    ({ images, nextCursor } = await getMyImagesPage({
+      userId,                 // 🔑 scopes query to the owner
+      limit:  20,
+      cursor: null,
+    }));
+  }
+
+  /* ---------- render ---------- */
   return (
     <main>
       <SignedOut>
-        <div className="w-full h-full text-center text-2xl">Please sign in above</div>
+        <div className="w-full h-full text-center text-2xl">
+          Please sign in above
+        </div>
       </SignedOut>
 
       <SignedIn>
         <SelectableGallery
           initialImages={images}
-          initialNextCursor={nextCursor}   // ✅ real cursor, not null
+          initialNextCursor={nextCursor}
         />
       </SignedIn>
     </main>
