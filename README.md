@@ -15,5 +15,5 @@
 - [x] Routing/image page (parallel route)
 - [x] Update upload button
 - [x] Analytics (posthog)
-- [ ] Delete button (ww/ Server Action)
+- [x] Delete button (ww/ Server Action)
 - [ ] Ratelimiting (upstash)
