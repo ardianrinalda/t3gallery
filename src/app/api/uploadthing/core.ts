@@ -1,4 +1,4 @@
-import { auth, getAuth } from "@clerk/nextjs/server";
+import { auth, clerkClient, getAuth } from "@clerk/nextjs/server";
 import type { RequestLike } from "node_modules/@clerk/nextjs/dist/types/server/types";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
@@ -20,11 +20,16 @@ export const ourFileRouter = {
         // 👈 pass the request to Clerk
         const request = req as unknown as RequestLike;
         const { userId } = getAuth(req as any);
+        const client = await clerkClient();
       
         if (!userId) throw new UploadThingError("Unauthorized");
 
+        const fullUserData = await client.users.getUser(userId);
+
+        if (fullUserData?.privateMetadata?.["can-upload"] !== true)
+          throw new UploadThingError("User Does Not Have Upload Permission");
+
         const { success } = await ratelimit.limit(userId);
-        
         if (!success) throw new UploadThingError("Ratelimited");
         // value available as  metadata.userId  in onUploadComplete
         return { userId };
