@@ -1,7 +1,7 @@
 import "server-only";
 import { db } from "./db";
 import { auth } from "@clerk/nextjs/server";
-import { and, eq } from "drizzle-orm";
+import { and, desc, eq, lt } from "drizzle-orm";
 import { images } from "./db/schema";
 import analyticsServerClient from "./analytics";
 
@@ -55,3 +55,27 @@ export async function deleteImage(id: number) {
         },
     });
 }
+
+export async function getMyImagesPage({
+    cursor,
+    limit,
+    userId,
+  }: {
+    cursor: number | null;
+    limit:  number;
+    userId?: string;             // pass from auth if you filter by user
+  }) {
+    const rows = await db
+      .select()
+      .from(images)
+      .where(cursor ? lt(images.id, cursor) : undefined)  // only older than cursor
+      .orderBy(desc(images.id))
+      .limit(limit + 1);         // +1 to know if there’s another page
+  
+    const nextCursor = rows.length > limit ? rows[limit - 1]!.id : null;
+  
+    return {
+      images: rows.slice(0, limit), // first `limit` items
+      nextCursor,
+    };
+  }

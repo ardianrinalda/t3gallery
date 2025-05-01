@@ -1,23 +1,29 @@
-export const dynamic = "force-dynamic";
-import { SignedOut } from "@clerk/nextjs";
-import { SignedIn } from "@clerk/nextjs";
-import { getMyImages } from "~/server/queries";
-import SelectableGallery from "./_components/select-gallery";
+// src/app/page.tsx
+export const dynamic = 'force-dynamic';
 
+import { SignedOut, SignedIn } from '@clerk/nextjs';
+import { getMyImagesPage }      from '~/server/queries';   // NEW (see below)
+import SelectableGallery        from './_components/select-gallery';
 
 export default async function HomePage() {
-  const images = await getMyImages();
-  
-  return (
-    <main className="">
-      <SignedOut>
-        <div className="w-full h-full text-center text-2x1">Please sign in above</div>
-      </SignedOut>
-      <SignedIn>
-        <SelectableGallery initialImages={images} />
-      </SignedIn>
+  // ------- fetch first “page” -------
+  const { images, nextCursor } = await getMyImagesPage({
+    limit: 20,
+    cursor: null,          // first page ⇒ no cursor yet
+  });
 
+  return (
+    <main>
+      <SignedOut>
+        <div className="w-full h-full text-center text-2xl">Please sign in above</div>
+      </SignedOut>
+
+      <SignedIn>
+        <SelectableGallery
+          initialImages={images}
+          initialNextCursor={nextCursor}   // ✅ real cursor, not null
+        />
+      </SignedIn>
     </main>
   );
 }
-
