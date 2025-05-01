@@ -21,6 +21,6 @@
 ## Extra
 
 - [x] Manage page layout (adjusting to different resolutions, lock the topnav, centered and shortened image name)
-- [ ] add "selecting images" feature
+- [x] add "selecting images" feature
 - [ ] infinite scroll
 - [ ] folders/albums

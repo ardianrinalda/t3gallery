@@ -2,6 +2,7 @@ import { clerkClient } from "@clerk/nextjs/server";
 import { deleteImage, getImage } from "~/server/queries";
 import { Button } from "./ui/button";
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 export default async function FullPageImageView(props: { id: number }) {
 
@@ -35,8 +36,11 @@ export default async function FullPageImageView(props: { id: number }) {
                     <form
                         action={async () => {
                             "use server";
-
                             await deleteImage(props.id);
+
+                            revalidatePath("/");
+                            redirect("/");
+
                         }}
                     >
                         <Button type="submit" variant="destructive">

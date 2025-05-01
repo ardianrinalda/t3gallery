@@ -3,8 +3,6 @@ import { db } from "./db";
 import { auth } from "@clerk/nextjs/server";
 import { and, eq } from "drizzle-orm";
 import { images } from "./db/schema";
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import analyticsServerClient from "./analytics";
 
 
@@ -56,7 +54,4 @@ export async function deleteImage(id: number) {
             imageId: id,
         },
     });
-
-    revalidatePath("/");
-    redirect("/");
 }

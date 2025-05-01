@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import "~/styles/globals.css";
 import "@uploadthing/react/styles.css";
 
@@ -10,6 +11,7 @@ import { ourFileRouter } from "./api/uploadthing/core";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { Toaster } from "sonner";
 import { PostHogProvider } from "./_analytics/provider";
+
 
 
 // export const runtime = 'edge'; // ⬅️ Tell Next.js this page runs in Edge Functions

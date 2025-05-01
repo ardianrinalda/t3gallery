@@ -1,4 +1,5 @@
 import { auth, clerkClient, getAuth } from "@clerk/nextjs/server";
+import { revalidatePath } from "next/cache";
 import type { RequestLike } from "node_modules/@clerk/nextjs/dist/types/server/types";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
@@ -42,6 +43,8 @@ export const ourFileRouter = {
           url: file.ufsUrl,          // make sure url column is long enough
           userId: metadata.userId!,
         });
+
+        revalidatePath("/");
         return { uploadedBy: metadata.userId };
       } catch (err) {
         throw new UploadThingError(
