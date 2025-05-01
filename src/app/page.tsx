@@ -3,31 +3,40 @@ import { SignedIn } from "@clerk/nextjs";
 import { getMyImages } from "~/server/queries";
 import Image from "next/image";
 import Link from "next/link";
+import SelectableGallery from "./_components/select-gallery";
 export const dynamic = "force-dynamic";
-// export const runtime = 'edge'; // ⬅️ Tell Next.js this page runs in Edge Functions
+
 
 async function Images(){
   const images = await getMyImages();
 
   return (
-    <div className="flex flex-wrap justify-center gap-4 p-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
           {images.map((image) => (
-            <div key={image.id} className="flex h-48 w-48 flex-col">
+            <div key={image.id} className="mb-4 flex flex-col items-center">
               <Link href={`/img/${image.id}`}>
-                <Image
-                  src={image.url} 
-                  style={{objectFit:"contain"}} 
-                  width={192}
-                  height={192}
-                  alt={image.name} />
+              {/* square wrapper */}
+                <div className="relative w-full pb-[100%]">
+                  <Image
+                    src={image.url} 
+                    alt={image.name}
+                    fill
+                    style={{objectFit:"contain"}} />
+                </div>
               </Link>
-              <div>{image.name}</div>
+              <div
+                className="mt-1 w-full text-center text-sm truncate centered"
+                title={image.name}
+              >
+                {image.name}
+              </div>
             </div>
           ))}
     </div>
   );
 }
 export default async function HomePage() {
+  const images = await getMyImages();
   
   return (
     <main className="">
@@ -35,7 +44,7 @@ export default async function HomePage() {
         <div className="w-full h-full text-center text-2x1">Please sign in above</div>
       </SignedOut>
       <SignedIn>
-        <Images />
+        <SelectableGallery initialImages={images} />
       </SignedIn>
 
     </main>

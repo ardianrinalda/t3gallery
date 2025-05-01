@@ -20,7 +20,7 @@
 
 ## Extra
 
-- [ ] Fix the current page layout for different resolutions, manage the topnav s.t. it stays regardless the number of pics
+- [x] Manage page layout (adjusting to different resolutions, lock the topnav, centered and shortened image name)
 - [ ] add "selecting images" feature
 - [ ] infinite scroll
 - [ ] folders/albums
