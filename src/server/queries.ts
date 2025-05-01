@@ -57,25 +57,30 @@ export async function deleteImage(id: number) {
 }
 
 export async function getMyImagesPage({
-    cursor,
-    limit,
     userId,
+    limit,
+    cursor,
   }: {
-    cursor: number | null;
+    userId: string;
     limit:  number;
-    userId?: string;             // pass from auth if you filter by user
+    cursor: number | null;
   }) {
     const rows = await db
       .select()
       .from(images)
-      .where(cursor ? lt(images.id, cursor) : undefined)  // only older than cursor
+      .where(and(
+        eq(images.userId, userId),          // ← this is the ownership guard
+        cursor ? lt(images.id, cursor) : undefined
+      ))
       .orderBy(desc(images.id))
-      .limit(limit + 1);         // +1 to know if there’s another page
+      .limit(limit + 1);
   
-    const nextCursor = rows.length > limit ? rows[limit - 1]!.id : null;
+    const nextCursor = rows.length > limit
+      ? rows[limit - 1]!.id
+      : null;
   
-    return {
-      images: rows.slice(0, limit), // first `limit` items
-      nextCursor,
-    };
+    return { images: rows.slice(0, limit), nextCursor };
   }
+  
+  
+  
